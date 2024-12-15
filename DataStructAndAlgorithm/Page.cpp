@@ -3,9 +3,9 @@
 #define MAX_WIDTH 64
 #define MAX_HEIGHT 64
 
-CPage::CPage():m_iHeight(64), m_iWidth(64)
+CPage::CPage():m_iHeight(64), m_iWidth(64), m_aligimentFlag(Page::Left)
 {
-
+	setAlignment(Page::Center);
 }
 
 CPage::~CPage()
@@ -23,7 +23,7 @@ void CPage::showPage()
 	std::cout << std::endl;
 
 	// Print title
-	std::cout << m_strTilte << std::endl;
+	printLine(m_strTilte);
 
 	// ´òÓ¡ÏÂ±ß¿ò
 	for (int i = 0; i < m_iWidth; i++)
@@ -54,4 +54,49 @@ void CPage::setContent(const std::vector<std::vector<std::string>>& textGridCont
 	// Judge the width and height, if anyone of them exceed the max size, return;
 
 	return;
+}
+
+void CPage::setAlignment(Page::Aligiment aligiment)
+{
+	m_aligimentFlag = aligiment;
+}
+
+void CPage::setLineAligiment(const std::string& strContent)
+{
+	if (m_aligimentFlag == Page::Left)
+	{
+		return;
+	}
+	else if (m_aligimentFlag == Page::Center)
+	{
+
+		for (int i = 0; i < (m_iWidth - strContent.size()) / 2; i++)
+		{
+			std::cout << " ";
+		}
+	}
+	else if (m_aligimentFlag == Page::Right)
+	{
+		for (int i = 0; i < m_iWidth - strContent.size(); i++)
+		{
+			std::cout << " ";
+		}
+	}
+}
+
+void CPage::printLine(const std::string& strContent)
+{
+	if (m_iWidth < strContent.size())
+	{
+		return;
+	}
+	else if (m_iWidth == strContent.size() || m_aligimentFlag == Page::Left)
+	{
+		std::cout << strContent << std::endl;
+	}
+	else
+	{
+		setLineAligiment(strContent);
+		std::cout << strContent << std::endl;
+	}
 }
