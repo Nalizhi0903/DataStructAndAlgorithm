@@ -3,7 +3,8 @@
 #define MAX_WIDTH 64
 #define MAX_HEIGHT 64
 
-CPage::CPage():m_iHeight(64), m_iWidth(64), m_aligimentFlag(Page::Left)
+CPage::CPage():m_iHeight(64), m_iWidth(64), 
+			   m_alignmentFlag(Page::Left), m_iOptionCount(0)
 {
 	setAlignment(Page::Center);
 }
@@ -24,6 +25,20 @@ void CPage::showPage()
 
 	// Print title
 	printLine(m_strTilte);
+
+	// Print option
+	auto it = m_vtstrOptions.begin();
+	while (it != m_vtstrOptions.end())
+	{
+		size_t index = std::distance(m_vtstrOptions.begin(), it);
+		if (index >= m_iOptionCount)
+		{
+			break;
+		}
+		std::string strOption = std::to_string(index + 1).append(".").append(*it);
+		printLine(strOption);
+		it++;
+	}
 
 	// ´òÓ¡ÏÂ±ß¿ò
 	for (int i = 0; i < m_iWidth; i++)
@@ -58,16 +73,16 @@ void CPage::setContent(const std::vector<std::vector<std::string>>& textGridCont
 
 void CPage::setAlignment(Page::Aligiment aligiment)
 {
-	m_aligimentFlag = aligiment;
+	m_alignmentFlag = aligiment;
 }
 
 void CPage::setLineAligiment(const std::string& strContent)
 {
-	if (m_aligimentFlag == Page::Left)
+	if (m_alignmentFlag == Page::Left)
 	{
 		return;
 	}
-	else if (m_aligimentFlag == Page::Center)
+	else if (m_alignmentFlag == Page::Center)
 	{
 
 		for (int i = 0; i < (m_iWidth - strContent.size()) / 2; i++)
@@ -75,7 +90,7 @@ void CPage::setLineAligiment(const std::string& strContent)
 			std::cout << " ";
 		}
 	}
-	else if (m_aligimentFlag == Page::Right)
+	else if (m_alignmentFlag == Page::Right)
 	{
 		for (int i = 0; i < m_iWidth - strContent.size(); i++)
 		{
@@ -90,7 +105,7 @@ void CPage::printLine(const std::string& strContent)
 	{
 		return;
 	}
-	else if (m_iWidth == strContent.size() || m_aligimentFlag == Page::Left)
+	else if (m_iWidth == strContent.size() || m_alignmentFlag == Page::Left)
 	{
 		std::cout << strContent << std::endl;
 	}
@@ -99,4 +114,10 @@ void CPage::printLine(const std::string& strContent)
 		setLineAligiment(strContent);
 		std::cout << strContent << std::endl;
 	}
+}
+
+void CPage::addOperation(const std::string& strOperationName)
+{
+	m_iOptionCount++;
+	m_vtstrOptions.push_back(strOperationName);
 }

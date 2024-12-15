@@ -27,5 +27,7 @@ void CBrowser::initHomePage()
 	std::vector<std::vector<std::string>> textGridContent;
 	m_pgHome.setTitle("Home");
 	m_pgHome.setContent(textGridContent);
+	m_pgHome.addOperation("Algorithm");
+	m_pgHome.addOperation("DataStruct");
 	m_pgHome.showPage();
 }

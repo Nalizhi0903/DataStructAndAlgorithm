@@ -16,29 +16,38 @@ namespace Page
 class CPage
 {
 public:
-	// 空页面
+	// Empty page
 	CPage();
 	virtual ~CPage();
 
 public:
-	// 显示此页面
+	// show this page
 	void showPage();
 	void setTitle(const std::string& strText);
 	void setContent(const std::vector<std::vector<std::string>>& textGridContent);
+	// set the all alignment of the page
 	void setAlignment(Page::Aligiment aligiment);
+	void addOperation(const std::string& strOperationName);
+
 private:
 	void showContent();
+	// set the alignment of a line in page
 	void setLineAligiment(const std::string& strContent);
 	void printLine(const std::string& strContent);
 
 private:
-	// 标题
+	// title
 	std::string m_strTilte;
-	// 选项个数
-	int m_iOptionNumber;
+	// count of options
+	int m_iOptionCount;
+	// store all options
+	std::vector<std::string> m_vtstrOptions;
+	// real Height & Width of page
 	int m_iWidth;
 	int m_iHeight;
-	Page::Aligiment m_aligimentFlag;
+	// alignment flag
+	Page::Aligiment m_alignmentFlag;
+	// main content
 	std::vector<std::vector<std::string>> m_textGridContent;
 };
 
