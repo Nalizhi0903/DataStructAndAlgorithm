@@ -14,4 +14,3 @@ private:
 private:
 	CPage m_pgHome;
 };
-

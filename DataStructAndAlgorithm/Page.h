@@ -5,11 +5,18 @@
 
 namespace Page
 {
-	enum Aligiment
+	enum Alignment
 	{
 		Left = 0,
 		Center,
-		Right
+		Right,
+		Empty
+	};
+
+	enum EnterFlag
+	{
+		False,
+		True
 	};
 }
 
@@ -26,14 +33,15 @@ public:
 	void setTitle(const std::string& strText);
 	void setContent(const std::vector<std::vector<std::string>>& textGridContent);
 	// set the all alignment of the page
-	void setAlignment(Page::Aligiment aligiment);
+	void setAlignment(Page::Alignment alignment);
 	void addOperation(const std::string& strOperationName);
 
 private:
 	void showContent();
 	// set the alignment of a line in page
-	void setLineAligiment(const std::string& strContent);
-	void printLine(const std::string& strContent);
+	void setLineAlignment(const std::string& strContent, Page::Alignment alignment = Page::Empty);
+	void printLine(const std::string& strContent, Page::EnterFlag flag, Page::Alignment alignment = Page::Empty);
+	void waitForOperation();
 
 private:
 	// title
@@ -46,7 +54,7 @@ private:
 	int m_iWidth;
 	int m_iHeight;
 	// alignment flag
-	Page::Aligiment m_alignmentFlag;
+	Page::Alignment m_alignmentFlag;
 	// main content
 	std::vector<std::vector<std::string>> m_textGridContent;
 };

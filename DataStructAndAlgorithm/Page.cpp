@@ -24,7 +24,7 @@ void CPage::showPage()
 	std::cout << std::endl;
 
 	// Print title
-	printLine(m_strTilte);
+	printLine(m_strTilte, Page::EnterFlag::True);
 
 	// Print option
 	auto it = m_vtstrOptions.begin();
@@ -36,7 +36,7 @@ void CPage::showPage()
 			break;
 		}
 		std::string strOption = std::to_string(index + 1).append(".").append(*it);
-		printLine(strOption);
+		printLine(strOption, Page::EnterFlag::True);
 		it++;
 	}
 
@@ -46,6 +46,9 @@ void CPage::showPage()
 		std::cout << "*";
 	}
 	std::cout << std::endl;
+
+	// Waitting for user's operation
+	waitForOperation();
 }
 
 void CPage::setTitle(const std::string& strText)
@@ -71,18 +74,28 @@ void CPage::setContent(const std::vector<std::vector<std::string>>& textGridCont
 	return;
 }
 
-void CPage::setAlignment(Page::Aligiment aligiment)
+void CPage::setAlignment(Page::Alignment aligiment)
 {
 	m_alignmentFlag = aligiment;
 }
 
-void CPage::setLineAligiment(const std::string& strContent)
+void CPage::setLineAlignment(const std::string& strContent, Page::Alignment alignment)
 {
-	if (m_alignmentFlag == Page::Left)
+	Page::Alignment tmpAlignmentFlag;
+	if (alignment != Page::Alignment::Empty)
+	{
+		tmpAlignmentFlag = alignment;
+	}
+	else
+	{
+		tmpAlignmentFlag = m_alignmentFlag;
+	}
+
+	if (tmpAlignmentFlag == Page::Left)
 	{
 		return;
 	}
-	else if (m_alignmentFlag == Page::Center)
+	else if (tmpAlignmentFlag == Page::Center)
 	{
 
 		for (int i = 0; i < (m_iWidth - strContent.size()) / 2; i++)
@@ -90,7 +103,7 @@ void CPage::setLineAligiment(const std::string& strContent)
 			std::cout << " ";
 		}
 	}
-	else if (m_alignmentFlag == Page::Right)
+	else if (tmpAlignmentFlag == Page::Right)
 	{
 		for (int i = 0; i < m_iWidth - strContent.size(); i++)
 		{
@@ -99,20 +112,25 @@ void CPage::setLineAligiment(const std::string& strContent)
 	}
 }
 
-void CPage::printLine(const std::string& strContent)
+void CPage::printLine(const std::string& strContent, Page::EnterFlag flag, Page::Alignment alignment)
 {
 	if (m_iWidth < strContent.size())
 	{
 		return;
 	}
-	else if (m_iWidth == strContent.size() || m_alignmentFlag == Page::Left)
+	else if (m_iWidth == strContent.size() || alignment == Page::Left)
 	{
-		std::cout << strContent << std::endl;
+		std::cout << strContent;
 	}
 	else
 	{
-		setLineAligiment(strContent);
-		std::cout << strContent << std::endl;
+		setLineAlignment(strContent, alignment);
+		std::cout << strContent;
+	}
+
+	if (flag == Page::EnterFlag::True)
+	{
+		std::cout << "\n";
 	}
 }
 
@@ -120,4 +138,11 @@ void CPage::addOperation(const std::string& strOperationName)
 {
 	m_iOptionCount++;
 	m_vtstrOptions.push_back(strOperationName);
+}
+
+void CPage::waitForOperation()
+{
+	printLine("Please enter the number of selection:", Page::EnterFlag::False, Page::Alignment::Left);
+	int iOperation;
+	iOperation = getchar();
 }
