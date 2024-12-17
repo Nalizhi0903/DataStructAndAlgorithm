@@ -41,7 +41,8 @@ private:
 	// set the alignment of a line in page
 	void setLineAlignment(const std::string& strContent, Page::Alignment alignment = Page::Empty);
 	void printLine(const std::string& strContent, Page::EnterFlag flag, Page::Alignment alignment = Page::Empty);
-	void waitForOperation();
+	int waitForOperation();
+	void excuteOperation(int iOperation);
 
 private:
 	// title

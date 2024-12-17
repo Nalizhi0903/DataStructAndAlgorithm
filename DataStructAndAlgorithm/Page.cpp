@@ -48,7 +48,7 @@ void CPage::showPage()
 	std::cout << std::endl;
 
 	// Waitting for user's operation
-	waitForOperation();
+	excuteOperation(waitForOperation());
 }
 
 void CPage::setTitle(const std::string& strText)
@@ -140,9 +140,46 @@ void CPage::addOperation(const std::string& strOperationName)
 	m_vtstrOptions.push_back(strOperationName);
 }
 
-void CPage::waitForOperation()
+int CPage::waitForOperation()
 {
 	printLine("Please enter the number of selection:", Page::EnterFlag::False, Page::Alignment::Left);
 	int iOperation;
-	iOperation = getchar();
+	std::string strInput;
+	std::getline(std::cin, strInput);
+	try 
+	{
+		iOperation = std::stoi(strInput);
+	}
+	catch (const std::invalid_argument& e) 
+	{
+		std::cout << "Invalid input, please input a intergration number" << std::endl;
+		iOperation = 0;
+	}
+	catch (const std::out_of_range& e) 
+	{
+		std::cout << "Out of range" << std::endl;
+		iOperation = 0;
+	}
+	//getchar();
+	return iOperation;
+}
+
+void CPage::excuteOperation(int iOperation)
+{
+	// go back previous page
+	if (iOperation == m_iOptionCount)
+	{
+		return;
+	}
+	else if (iOperation <= 0 || iOperation > m_iOptionCount)
+	{
+		printLine("No option", Page::EnterFlag::True, Page::Alignment::Left);
+		excuteOperation(waitForOperation());
+		return;
+	}
+
+	for (int i = 0; i < m_iOptionCount; i++)
+	{
+		return;
+	}
 }
