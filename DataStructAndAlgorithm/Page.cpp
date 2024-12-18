@@ -35,7 +35,7 @@ void CPage::showPage()
 		{
 			break;
 		}
-		std::string strOption = std::to_string(index + 1).append(".").append(*it);
+		std::string strOption = std::to_string(index + 1).append(".").append(it->first);
 		printLine(strOption, Page::EnterFlag::True);
 		it++;
 	}
@@ -48,7 +48,30 @@ void CPage::showPage()
 	std::cout << std::endl;
 
 	// Waitting for user's operation
-	excuteOperation(waitForOperation());
+	Page::OperationFlag operationFlag;
+	while (true)
+	{
+		excuteOperation(waitForOperation(), operationFlag);
+		if (operationFlag == Page::OperationFlag::Back)
+		{
+			// set signal
+			std::cout << operationFlag << std::endl;
+			break;
+		}
+		else if (operationFlag == Page::OperationFlag::Stay)
+		{
+			// TODO using list to store the fuction pointer
+			// excute additonal work
+			std::cout << operationFlag << std::endl;
+			continue;
+		}
+		else if (operationFlag == Page::OperationFlag::NewPage)
+		{
+			// set signal
+			std::cout << operationFlag << std::endl;
+			break;
+		}
+	}
 }
 
 void CPage::setTitle(const std::string& strText)
@@ -134,10 +157,10 @@ void CPage::printLine(const std::string& strContent, Page::EnterFlag flag, Page:
 	}
 }
 
-void CPage::addOperation(const std::string& strOperationName)
+void CPage::addOperation(const std::string& strOperationName, const Page::OperationFlag& operationFlag)
 {
 	m_iOptionCount++;
-	m_vtstrOptions.push_back(strOperationName);
+	m_vtstrOptions.push_back(std::make_pair(strOperationName, operationFlag));
 }
 
 int CPage::waitForOperation()
@@ -149,6 +172,10 @@ int CPage::waitForOperation()
 	try 
 	{
 		iOperation = std::stoi(strInput);
+		if (iOperation != 0)
+		{
+			iOperation--;
+		}
 	}
 	catch (const std::invalid_argument& e) 
 	{
@@ -160,26 +187,17 @@ int CPage::waitForOperation()
 		std::cout << "Out of range" << std::endl;
 		iOperation = 0;
 	}
-	//getchar();
 	return iOperation;
 }
 
-void CPage::excuteOperation(int iOperation)
+void CPage::excuteOperation(int iOperation, Page::OperationFlag& operationFlag)
 {
-	// go back previous page
-	if (iOperation == m_iOptionCount)
-	{
-		return;
-	}
-	else if (iOperation <= 0 || iOperation > m_iOptionCount)
+	if (iOperation < 0 || iOperation >= m_iOptionCount)
 	{
 		printLine("No option", Page::EnterFlag::True, Page::Alignment::Left);
-		excuteOperation(waitForOperation());
+		excuteOperation(waitForOperation(), operationFlag);
 		return;
 	}
-
-	for (int i = 0; i < m_iOptionCount; i++)
-	{
-		return;
-	}
+	operationFlag = m_vtstrOptions[iOperation].second;
+	return;
 }
