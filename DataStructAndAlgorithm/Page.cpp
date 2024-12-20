@@ -1,4 +1,5 @@
 #include "Page.h"
+#include "Browser.h"
 
 #define MAX_WIDTH 64
 #define MAX_HEIGHT 64
@@ -56,6 +57,7 @@ void CPage::showPage()
 		{
 			// set signal
 			std::cout << operationFlag << std::endl;
+			CBrowser::s_signal = signal::Back;
 			break;
 		}
 		else if (operationFlag == Page::OperationFlag::Stay)
@@ -69,6 +71,14 @@ void CPage::showPage()
 		{
 			// set signal
 			std::cout << operationFlag << std::endl;
+			CBrowser::s_signal = signal::NewPage;
+			break;
+		}
+		else if (operationFlag == Page::OperationFlag::Quit)
+		{
+			// set signal
+			std::cout << operationFlag << std::endl;
+			CBrowser::s_signal = signal::Quit;
 			break;
 		}
 	}

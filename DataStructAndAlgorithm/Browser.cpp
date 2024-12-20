@@ -3,6 +3,8 @@
 #include <Windows.h>
 #endif
 
+signal CBrowser::s_signal = signal::NewPage;
+
 CBrowser::CBrowser()
 {
 

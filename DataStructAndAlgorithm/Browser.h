@@ -2,6 +2,14 @@
 
 #include "Page.h"
 
+
+enum signal
+{
+	Back = 0,
+	NewPage,
+	Quit
+};
+
 class CBrowser
 {
 public:
@@ -13,4 +21,6 @@ private:
 	void initHomePage();
 private:
 	CPage m_pgHome;
+public:
+	static signal s_signal;
 };

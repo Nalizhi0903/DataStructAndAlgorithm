@@ -23,7 +23,8 @@ namespace Page
 	{
 		Back = 0, 
 		NewPage,
-		Stay
+		Stay,
+		Quit
 	};
 }
 
@@ -36,9 +37,9 @@ public:
 
 public:
 	// show this page
-	void showPage();
 	void setTitle(const std::string& strText);
 	void setContent(const std::vector<std::vector<std::string>>& textGridContent);
+	void showPage();
 	// set the all alignment of the page
 	void setAlignment(Page::Alignment alignment);
 	void addOperation(const std::string& strOperationName, const Page::OperationFlag& operationFlag);
